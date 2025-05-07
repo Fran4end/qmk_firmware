@@ -1,69 +1,145 @@
-/* Copyright 2021 @ Keychron (https://www.keychron.com)
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include QMK_KEYBOARD_H
 #include "common.h"
+#include "keymap_italian.h"
+
+/*
+#include "quantum.h" // Include for get_mods function
+#include "action.h"
+#include "send_string.h" // Include the header for SEND_STRING
+*/
+
+// enum layers{
+//     MAC_BASE,
+//     WIN_BASE,
+//     _FN1,
+//     _FN2,
+//     _FN3
+// };
+
 // clang-format off
-
-enum layers{
-    MAC_BASE,
-    WIN_BASE,
-    _FN1,
-    _FN2,
-    _FN3
-};
-
-#define KC_TASK LGUI(KC_TAB)
-#define KC_FLXP LGUI(KC_E)
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    /*
+    * MAC_BASE
+    */
     [MAC_BASE] = LAYOUT_ansi_67(
-        KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          KC_INS,
-        KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_DEL,
-        KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,  KC_QUOT,            KC_ENT,           KC_HOME,
-        KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,   KC_SLSH,            KC_RSFT, KC_UP,
-        KC_LCTL, KC_LOPT,  KC_LCMD,                             KC_SPC,                             KC_RCMD,  MO(_FN1), MO(_FN3), KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,     KC_EQL,     KC_BSPC,          KC_INS,
+        KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,     KC_RBRC,    KC_BSLS,          KC_DEL,
+        KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,  KC_QUOT,                 KC_ENT,           KC_HOME,
+        KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,   KC_SLSH,     KC_RSFT,             KC_UP,
+        KC_LCTL, KC_LCMD,  FKEYS,                              KC_SPC,                              KC_LOPT,  SYMBOL,      MEH_ENT,    KC_LEFT, KC_DOWN, KC_RGHT),
 
-    [WIN_BASE] = LAYOUT_ansi_67(
+    /*
+    * BASE
+    ,---------------------------------------------------------------------------------------------------------.
+    | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   -  |   =  | BKsp | | INS |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
+    | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [   |  ]   |  \   | | DEL |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
+    | LOCK |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  '   |    Enter    |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
+    | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
+    | Ctrl |  GUI |  FN  |                   Space                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
+    `---------------------------------------------------------------------------------------------------------'
+    */
+    [_BASE] = LAYOUT_ansi_67(
         KC_ESC,  KC_1,     KC_2,     KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_MINS,  KC_EQL,   KC_BSPC,          KC_INS,
-        KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_DEL,
-        KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,  KC_QUOT,            KC_ENT,           KC_HOME,
-        KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,   KC_SLSH,            KC_RSFT, KC_UP,
-        KC_LCTL, KC_LWIN,  KC_LALT,                             KC_SPC,                             KC_RALT,  MO(_FN2), MO(_FN3), KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_HOME,
+        KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    NAV_SCLN, KC_QUOT,            KC_ENT,           KC_DEL,
+        KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,   KC_SLSH,  KC_RSFT,           KC_UP,
+        KC_LCTL, KC_LGUI,  FKEYS,                              KC_SPC,                              KC_LALT,  SYMBOL,   MEH_ENT,  KC_LEFT, KC_DOWN, KC_RGHT),
 
-    [_FN1] = LAYOUT_ansi_67(
-        KC_GRV,  KC_BRID,  KC_BRIU,  KC_NO,   KC_NO,   RM_VALD, RM_VALU, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,          _______,
-        RM_TOGG, RM_NEXT,  RM_VALU,  RM_HUEU, RM_SATU, RM_SPDU, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, RM_PREV,  RM_VALD,  RM_HUED, RM_SATD, RM_SPDD, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,           _______,  _______, _______, _______, _______, NK_TOGG, _______, _______, _______,  _______,            _______, _______,
+    /*
+    * SYMBOL
+    * Every symbol and number required for coding and every-day use.
+    ,---------------------------------------------------------------------------------------------------------.
+    |  `   |   1  |   2  |   3  |   €  |   5  |   °  |   §  |   8  |   9  |   0  |   -  |   =  | BKsp | | INS |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
+    |  ~   |   Q  |   W  |   è  |   é  |   T  |   Y  |   ù  |   ì  |   ò  |   P  |  [   |  ]   |  \   | | DEL |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
+    | LOCK |   à  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  '   |    Enter    |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
+    | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
+    | Ctrl |  GUI |  FN  |                   Space                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
+    `---------------------------------------------------------------------------------------------------------'
+    */
+    [_SYMBOL] = LAYOUT_ansi_67(
+        KC_GRV,  _______,  _______,  _______, IT_EURO, _______, IT_DEG,  IT_SECT, _______, _______, _______,  _______,  _______,  _______,          _______,
+        KC_TILD, _______,  _______,  IT_EGRV, _______, _______, _______, IT_UGRV, IT_IGRV, IT_OGRV, _______,  _______,  _______,  _______,          _______,
+        _______, IT_AGRV,  _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
+        _______,           _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,           _______,
         _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
 
-    [_FN2] = LAYOUT_ansi_67(
+    /*
+    * FNKEYS
+    * Function keys, mouse emulation and less commonly used special keys.
+    ,---------------------------------------------------------------------------------------------------------.
+    | ESC  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 | BKsp | | INS |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
+    | Tab  |   Q  |   W  |   E  |   R  |   T  |  AC0 |  BT1 | MS_U |  BT1 |  AC1 |  [   |  ]   |  \   | | DEL |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
+    | Ctrl |   A  |   S  |   D  |   F  |   G  | WH_D | MS_L | MS_D | MS_R | WH_U |  '   |    Enter    |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
+    | Shift|   Z  |   X  |  F13 |  F14 |  F15 |  F16 |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
+    | Ctrl |  GUI |  FN  |                   Space                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
+    `---------------------------------------------------------------------------------------------------------'
+    */
+    [_FKEYS] = LAYOUT_ansi_67(
+        _______, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   _______,          _______,
+        _______, _______,  _______,  _______, _______, _______, KC_ACL0, KC_BTN1, KC_MS_U, KC_BTN2, KC_ACL1,  _______,  _______,  _______,          _______,
+        KC_LCTL, _______,  _______,  _______, _______, _______, KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_U,  _______,            _______,          _______,
+        _______,           _______,  KC_F13,  KC_F14,  KC_F15,  KC_F16,  _______, _______, _______, _______,  _______,  _______,           _______,
+        _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
+
+    /*
+    * NAV
+    * loosely vim-based cursor and document navigation keys.
+    * Accessed by holding semicolon.
+    * Acts as cmd for any unbound keys.
+    ,---------------------------------------------------------------------------------------------------------.
+    | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   -  |   =  | BKsp | | INS |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
+    | Tab  |   Q  |   W  | PV_W |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [   |  ]   |  \   | | DEL |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
+    | LOCK |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  '   |    Enter    |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
+    | Shift|   Z  |  CUT | COPY | PASTE| NX_W |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
+    | Ctrl |  GUI |  FN  |                   Space                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
+    `---------------------------------------------------------------------------------------------------------'
+    */
+    [_NAV] = LAYOUT_ansi_67(
+        _______, _______,  _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          KC_END,
+        _______, _______,  _______,  WORD_R,  _______, _______, _______, _______, _______, LINE_R,  LINE_L,   _______,  _______,  KC_HOME,          KC_PGUP,
+        _______, _______,  _______,  _______, _______, _______, _______, _______, _______, KC_INS,  KC_HOME,  KC_PGUP,            _______,          KC_PGDN,
+        _______,           _______,  CUT,     COPY,    PASTE,   WORD_L,  _______, _______, KC_DEL,  KC_END,   KC_PGDN,  _______,           _______,
+        _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
+
+    /*
+    * ADJUST
+    * Keyboard level commands.
+    * Accessed via FKEY+SYMBOL keys.
+    TODO: fix comment scheme
+    ,---------------------------------------------------------------------------------------------------------.
+    | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   -  |   =  | BKsp | | INS |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
+    | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [   |  ]   |  \   | | DEL |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
+    | LOCK |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  '   |    Enter    |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
+    | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
+    |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
+    | Ctrl |  GUI |  FN  |                   Emoji                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
+    `---------------------------------------------------------------------------------------------------------'
+    */
+    [_ADJUST] = LAYOUT_ansi_67(
         KC_GRV,  KC_BRID,  KC_BRIU,  KC_TASK, KC_FLXP, RM_VALD, RM_VALU, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,          _______,
-        RM_TOGG, RM_NEXT,  RM_VALU,  RM_HUEU, RM_SATU, RM_SPDU, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, RM_PREV,  RM_VALD,  RM_HUED, RM_SATD, RM_SPDD, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,           _______,  _______, _______, _______, _______, NK_TOGG, _______, _______, _______,  _______,            _______, _______,
-        _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
-
-    [_FN3] = LAYOUT_ansi_67(
-        KC_TILD, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   _______,          _______,
-        RM_TOGG, RM_NEXT,  RM_VALU,  RM_HUEU, RM_SATU, RM_SPDU, _______, _______, _______, _______, _______,  _______,  _______,  _______,          _______,
-        _______, RM_PREV,  RM_VALD,  RM_HUED, RM_SATD, RM_SPDD, _______, _______, _______, _______, _______,  _______,            _______,          _______,
-        _______,           _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______, _______,
-        _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______)
+        RM_TOGG, RM_NEXT,  RM_VALU,  RM_HUEU, RM_SATU, RM_SPDU, _______, _______, _______, CAP_LST, CAP_IMG,  CAP_MOV,  _______,  _______,          _______,
+        LOCK,    RM_PREV,  RM_VALD,  RM_HUED, RM_SATD, RM_SPDD, _______, _______, _______, KVM_SWT, COPYADDR, KC_MPLY,            _______,          _______,
+        QK_BOOT,           _______,  XBX_IMG, XBX_MOV, _______, _______, NK_TOGG, _______, _______, _______,  _______,  _______,           _______,
+        _______, _______,  _______,                             EMOJI,                              _______,  _______,  _______,  _______, _______, _______),
 };
 
 // track the time of the last key input.
@@ -127,6 +203,8 @@ static int vim_movement;
 
 static bool vim_insert;
 
+/*
+! sound not working
 // sounds
 float song_kvm_setting[][2] = SONG(S__NOTE(_C5),S__NOTE(_C6),S__NOTE(_C7));
 
@@ -135,54 +213,8 @@ float song_kvm_1[][2] = SONG(S__NOTE(_E5),S__NOTE(_C5));
 
 float song_game_0[][2] = SONG(S__NOTE(_C6),S__NOTE(_C5));
 float song_game_1[][2] = SONG(S__NOTE(_C5),S__NOTE(_C6));
-
-void set_game_mode(bool state, bool update_target_state)
-{
-    if (state)
-    {
-        layer_on(_GAME);
-        PLAY_SONG(song_game_1);
-        if (update_target_state)
-            game_target = kvm_target;
-    }
-    else
-    {
-        layer_off(_GAME);
-        if (update_target_state && game_target != -1)
-        {
-            PLAY_SONG(song_game_0);
-            game_target = -1;
-        }
-    }
-}
-
-bool process_game_specials(uint16_t keycode, keyrecord_t *record) {
-
-    if (!record->event.pressed)
-        return true;
-
-    bool isGameMode = IS_GAME;
-
-    switch (keycode)
-    {
-        case GAME:
-            set_game_mode(!isGameMode, true);
-            return false;
-        case KC_TAB:
-            // turn off game mode on alt-tab
-            if (isGameMode && get_mods() & MOD_BIT(KC_LALT))
-            {
-                if (record->event.pressed)
-                    set_game_mode(false, true);
-            }
-            break;
-    }
-
-    return true;
-}
-
-void backtick_commit(void)
-{
+*/
+void backtick_commit(void){
     switch (backtick_surround_state)
     {
         case 1:
@@ -199,8 +231,7 @@ void backtick_commit(void)
     backtick_surround_state = 0;
 }
 
-void backtick_begin(void)
-{
+void backtick_begin(void){
     if (backtick_surround_state != 0)
         return;
 
@@ -226,13 +257,12 @@ bool process_backtick_surround(uint16_t keycode, keyrecord_t *record) {
         case KC_LSFT:
         case KC_RSFT:
         case KC_LCTL:
-            // don't consume symbol from keys that aren't meaninful.
+            // don't consume symbol from keys that aren't meaningful.
             break;
 
         case KC_SPC:
         case KC_ESC:
         case KC_COMM:
-        case CTRL_ESC:
             if (get_mods() == 0)
                 // exit via various commit keys
                 backtick_commit();
@@ -360,7 +390,7 @@ bool process_meh(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case MEH_ENT:
             if (record->event.pressed) {
-                if (timer_elapsed(last_key_time) < 200 || get_highest_layer(layer_state) != _BASE)
+                if (last_key_code != KC_LGUI && (timer_elapsed(last_key_time) < 200 || get_highest_layer(layer_state) != _BASE))
                 {
                     register_code(KC_ENT);
                     meh_activated = 3;
@@ -375,7 +405,8 @@ bool process_meh(uint16_t keycode, keyrecord_t *record) {
                 switch (meh_activated)
                 {
                     case 1:
-                        tap_code16(KC_ENT);
+                        if (timer_elapsed(last_key_time) < 200)
+                            tap_code16(KC_ENT);
                         break;
 
                     case 2:
@@ -394,9 +425,6 @@ bool process_meh(uint16_t keycode, keyrecord_t *record) {
             return true;
 
         default:
-            if (!record->event.pressed)
-                break;
-
             switch (meh_activated)
             {
                 case 1:
@@ -409,87 +437,6 @@ bool process_meh(uint16_t keycode, keyrecord_t *record) {
                     break;
             }
 
-            break;
-    }
-
-    return true;
-}
-
-// track the state of CTRL_ESC over multiple key presses.
-// 0 - not activated
-// 1 - pressed (esc activated, ctrl pending on next keystroke)
-// 2 - pressed (ctrl activated, esc pending on CTRL_ESC release if no combo consumption)
-// 3 - consumed (upgraded to ctrl or autoexited on special case keys)
-static int ctrl_escape_activated;
-
-// ctrl-esc has two modes of activation depending on how long since the last key press.
-// the assumption is that if it is pressed soon after another key, it is probably intended to be escape
-// (ie. for vim insert mode exit), but if pressed out of the blue it's more likely to be a ctrl key.
-//
-// if pressed with no recent key presses, it will begin in ctrl mode, and only actuate an escape press
-// on release (if not consumed as control). this allows for ctrl combos without an unnecessary escape fire.
-//
-// if pressed after a recent key, it will begin in esc mode, and only actuate a control press if another
-// key is pressed during the hold.
-bool process_ctrl_esc(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case CTRL_ESC:
-            if (record->event.pressed) {
-                // okay this is getting a bit silly so you might ask "why not just split out into separate keys"
-                // well i'm not ready to do that yet, and the remaining complexity i'm adding here is to handle
-                // very edge cases.
-
-                // only immediate escape if the last keypress was quite recent..
-                if (timer_elapsed(last_key_time) < 200
-                        // ..and no modifiers are held..
-                        && get_mods() == 0
-                        // ..and either the last key was CTRL_ESC (two pressed in fast succession)..
-                        && (last_key_code == CTRL_ESC
-                        // ..or we are pretty sure that we're performing a vim normal move return.
-                        // - we haven't been 'jk'-ing for too long in a row
-                        // - we pressed 'i' more recently than 'esc'
-                        || (vim_movement < 2 && vim_insert))
-                   )
-                {
-                    register_code(KC_ESC);
-                    ctrl_escape_activated = 1;
-                }
-                else
-                {
-                    register_code(KC_LCTL);
-                    ctrl_escape_activated = 2;
-                }
-            }
-            else
-            {
-                unregister_code(KC_ESC);
-                unregister_code(KC_LCTL);
-
-                if (timer_elapsed(last_key_time) < 250 && ctrl_escape_activated == 2)
-                {
-                    tap_code16(KC_ESC);
-                }
-
-                ctrl_escape_activated = 0;
-            }
-
-            return true;
-        default:
-            if (record->event.pressed) {
-                switch (ctrl_escape_activated)
-                {
-                    case 1:
-                        // ctrl combo capture.
-                        unregister_code(KC_ESC);
-                        // register_code(KC_LCTL);
-                        ctrl_escape_activated = 3;
-                        break;
-                    case 2:
-                        // consumption.
-                        ctrl_escape_activated = 3;
-                        break;
-                }
-            }
             break;
     }
 
@@ -519,7 +466,7 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 // timer case here is just to give more immediacy to semicolons when typing at EOL.
                 // set low enough to not impede intended navigation
-                if (get_mods() & MOD_BIT(KC_LSFT) || (get_mods() == 0 && timer_elapsed(last_key_time) < 100 && last_key_code != CTRL_ESC))
+                if (get_mods() & MOD_BIT(KC_LSFT) || (get_mods() == 0 && timer_elapsed(last_key_time) < 100 && last_key_code != KC_ESC))
                 {
                     register_code16(KC_SCLN);
                     semicolon_nav_activated = 2;
@@ -589,8 +536,6 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
 
                 tap_code16(KC_TAB);
                 semicolon_nav_activated = 3;
-                // don't fire escape after usage. has to be handled here due to the blocking return.
-                ctrl_escape_activated = 3;
                 return false;
             }
             else
@@ -612,7 +557,7 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
 
             break;
 
-        case CTRL_ESC:
+        case KC_ESC:
         case KC_SPC:
             // this handles cases like SCLN_NAV -> KC_ESC rapidly after a previous character.
             if (semicolon_nav_activated == 1 && timer_elapsed(last_key_time) < 500)
@@ -745,7 +690,7 @@ bool process_macros(uint16_t keycode, keyrecord_t *record) {
             if (get_mods() & MOD_BIT(KC_LCTL))
             {
                 SEND_STRING(SS_LCTL(SS_TAP(X_F12)) "t");
-                PLAY_SONG(song_kvm_setting);
+                // PLAY_SONG(song_kvm_setting);
                 return false;
             }
 
@@ -755,12 +700,14 @@ bool process_macros(uint16_t keycode, keyrecord_t *record) {
             // track the current target device to give audible feedback
             kvm_target = (kvm_target + 1) % 2;
 
-            if (kvm_target == 1)
-                PLAY_SONG(song_kvm_1);
-            else
-                PLAY_SONG(song_kvm_0);
+            // ! sound not working
+            // if (kvm_target == 1)
+            //     PLAY_SONG(song_kvm_1);
+            // else
+            //     PLAY_SONG(song_kvm_0);
+            // !
 
-            set_game_mode(IS_GAME, false);
+            // set_game_mode(IS_GAME, false);
             return false;
 
         case KC_BSPC:
@@ -809,7 +756,6 @@ void update_last_was_number(uint16_t keycode, keyrecord_t *record) {
                 vim_insert = true;
                 break;
             case KC_ESC:
-            case CTRL_ESC:
                 vim_insert = false;
                 break;
         }
@@ -843,8 +789,6 @@ void update_last_was_number(uint16_t keycode, keyrecord_t *record) {
 bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
     if (!process_symbol_specials(keycode, record)) return false;
 
-    if (!process_game_specials(keycode, record)) return false;
-
     // in game mode, all excess processing is skipped (mainly to avoid unwanted macro / helper triggers).
     if (!(IS_GAME))
     {
@@ -859,8 +803,6 @@ bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
         if (!process_meh(keycode, record)) return false;
 
         if (!process_macros(keycode, record)) return false;
-
-        if (!process_ctrl_esc(keycode, record)) return false;
     }
 
     return true;
@@ -869,6 +811,9 @@ bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
 // For debounce and edge case purposes, track the last key timing, key code,
 // and whether it was a numeric character or not.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    debug_enable=true;
+    debug_matrix=true;
 
     bool retval = process_all_custom(keycode, record);
 
@@ -879,6 +824,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     update_last_was_number(keycode, record);
+    print(layer_state);
     return retval;
 }
 
