@@ -310,7 +310,7 @@ void audio_driver_initialize_impl(void) {
     }
     if ((AUDIO_PIN == A5) || (AUDIO_PIN_ALT == A5)) {
         palSetLineMode(A5, PAL_MODE_INPUT_ANALOG);
-        dacStart(&DACD2, &dac_conf);
+        // dacStart(&DACD2, &dac_conf);
     }
 
     /* enable the output buffer, to directly drive external loads with no additional circuitry
@@ -322,8 +322,8 @@ void audio_driver_initialize_impl(void) {
      * this is done here, reaching directly into the stm32 registers since chibios has not implemented BOFF handling yet
      * (see: chibios/os/hal/ports/STM32/todo.txt '- BOFF handling in DACv1.'
      */
-    DACD1.params->dac->CR &= ~DAC_CR_BOFF1;
-    DACD2.params->dac->CR &= ~DAC_CR_BOFF2;
+    // DACD1.params->dac->CR &= ~DAC_CR_BOFF1;
+    // DACD2.params->dac->CR &= ~DAC_CR_BOFF2;
 
     /* Start the DAC output with all off values. This buffer will then get fed
      * with samples from dac_end, which will play notes.
@@ -335,7 +335,7 @@ void audio_driver_initialize_impl(void) {
     if (AUDIO_PIN == A4) {
         dacStartConversion(&DACD1, &dac_conv_cfg, dac_buffer, AUDIO_DAC_BUFFER_SIZE);
     } else if (AUDIO_PIN == A5) {
-        dacStartConversion(&DACD2, &dac_conv_cfg, dac_buffer, AUDIO_DAC_BUFFER_SIZE);
+        // dacStartConversion(&DACD2, &dac_conv_cfg, dac_buffer, AUDIO_DAC_BUFFER_SIZE);
     }
 
     // no inverted/out-of-phase waveform (yet?), only pulling AUDIO_PIN_ALT to AUDIO_DAC_OFF_VALUE

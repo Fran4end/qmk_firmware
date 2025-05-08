@@ -23,11 +23,16 @@
 #ifdef AUDIO_ENABLE
 #    define STARTUP_SONG SONG(S__NOTE(_E2))
 #    define GOODBYE_SONG SONG(S__NOTE(_C2))
-#    define AUDIO_PIN A9
-#    define AUDIO_PWM_DRIVER PWMD1
-#    define AUDIO_PWM_CHANNEL 1
-#    define AUDIO_PWM_COMPLEMENTARY_OUTPUT
 #endif
+
+#undef AUDIO_PIN
+#define AUDIO_PIN A4
+// #define AUDIO_ALT_PIN A5
+// #define AUDIO_PIN_ALT_AS_NEGATIVE
+// #define AUDIO_PWM_DRIVER PWMD1
+// #define AUDIO_PWM_CHANNEL 1
+// #define AUDIO_STATE_TIMER GPTD9
+// #define AUDIO_PWM_COMPLEMENTARY_OUTPUT
 
 // for sanwa keyboard emulation KVM
 #undef NKRO_ENABLE

@@ -812,9 +812,6 @@ bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
 // and whether it was a numeric character or not.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-    debug_enable=true;
-    debug_matrix=true;
-
     bool retval = process_all_custom(keycode, record);
 
     if (record->event.pressed)
@@ -824,7 +821,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     update_last_was_number(keycode, record);
-    print(layer_state);
     return retval;
 }
 

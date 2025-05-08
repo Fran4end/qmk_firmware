@@ -80,5 +80,6 @@
         "VOLU",
         "WINC",
         "WINCOMPOSE"
-    ]
+    ],
+    "makefile.configureOnOpen": true
 }
