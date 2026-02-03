@@ -21,6 +21,7 @@
 
 #define KC_TASK LGUI(KC_TAB)
 #define KC_FLXP LGUI(KC_E)
+#define RUN LGUI(LALT(KC_SPACE))
 
 // MAC only macros
 #define CUT LCTL(KC_X)
@@ -40,28 +41,15 @@ enum layers {
     _NAV,
 };
 
-enum keychron_keycodes {
+enum keycodes {
     QWERTY = SAFE_RANGE,
-    BACKLIT,
+    ALT_FN,
+    // BACKLIT,
     NAV_SCLN,
-    KVM_SWT,
+    // KVM_SWT,
     COPYADDR,
     SYMBOL,
     MD_CODE,
-    MEH_ENT,
     LOCK,
+    CATCH,
 };
-
-// // Define MATRIX_ROWS and MATRIX_COLS if not already defined
-// #ifndef MATRIX_ROWS
-// #    define MATRIX_ROWS 5 // Adjust this value based on your keyboard's matrix
-// #endif
-
-// #ifndef MATRIX_COLS
-// #    define MATRIX_COLS 14 // Adjust this value based on your keyboard's matrix
-// #endif
-
-// // Define LAYOUT_ansi_67 if not already defined
-// #ifndef LAYOUT_ansi_67
-// #    define LAYOUT_ansi_67(...) {__VA_ARGS__}
-// #endif

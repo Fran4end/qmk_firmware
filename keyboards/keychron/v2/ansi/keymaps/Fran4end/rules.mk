@@ -1,13 +1,17 @@
 COMMAND_ENABLE = no
-AUDIO_ENABLE = yes
+CONSOLE_ENABLE = no
+AUDIO_ENABLE = no
 BACKLIGHT_ENABLE = no
+RGB_MATRIX_ENABLE = yes
+VIA_ENABLE = yes
 KEY_LOCK_ENABLE = yes
 SEND_STRING_ENABLE = yes
 DYNAMIC_MACRO_ENABLE = yes
 DYNAMIC_MACRO_NO_NESTING = true
 MOUSEKEY_ENABLE = yes
 UNICODE_COMMON = yes
-UNICODE_ENABLE = yes
+# UNICODE_ENABLE = yes
+UNICODEMAP_ENABLE = yes
 
 USER_NAME := Fran4end
 
@@ -16,5 +20,6 @@ USER_NAME := Fran4end
  # sym_eager_pr: 990Hz
  # asym_eager_defer_pk: 955Hz
 # DEBOUNCE_TYPE = asym_eager_defer_pk
-AUDIO_DRIVER = dac_additive
+# AUDIO_DRIVER = dac_additive
+
 

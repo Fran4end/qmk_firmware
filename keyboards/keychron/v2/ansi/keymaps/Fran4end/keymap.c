@@ -1,6 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "common.h"
-#include "keymap_italian.h"
+#include "accents.h"
 
 /*
 #include "quantum.h" // Include for get_mods function
@@ -26,7 +26,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,     KC_RBRC,    KC_BSLS,          KC_DEL,
         KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,  KC_QUOT,                 KC_ENT,           KC_HOME,
         KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,   KC_SLSH,     KC_RSFT,             KC_UP,
-        KC_LCTL, KC_LCMD,  FKEYS,                              KC_SPC,                              KC_LOPT,  SYMBOL,      MEH_ENT,    KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LCMD,  FKEYS,                              KC_SPC,                              KC_LOPT,  SYMBOL,      KC_RCMD,    KC_LEFT, KC_DOWN, KC_RGHT),
 
     /*
     * BASE
@@ -39,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
     | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
     |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
-    | Ctrl |  GUI |  FN  |                   Space                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
+    | Ctrl |  GUI |ALT/FN|                   Space                 | Alt  |SYMBOL|  FN  | Left | Down | Right |
     `---------------------------------------------------------------------------------------------------------'
     */
     [_BASE] = LAYOUT_ansi_67(
@@ -47,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_HOME,
         KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    NAV_SCLN, KC_QUOT,            KC_ENT,           KC_DEL,
         KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,   KC_SLSH,  KC_RSFT,           KC_UP,
-        KC_LCTL, KC_LGUI,  FKEYS,                              KC_SPC,                              KC_LALT,  SYMBOL,   MEH_ENT,  KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LGUI,  ALT_FN,                              KC_SPC,                             KC_RALT,  SYMBOL,   FKEYS,    KC_LEFT, KC_DOWN, KC_RGHT),
 
     /*
     * SYMBOL
@@ -65,9 +65,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     `---------------------------------------------------------------------------------------------------------'
     */
     [_SYMBOL] = LAYOUT_ansi_67(
-        KC_GRV,  _______,  _______,  _______, IT_EURO, _______, IT_DEG,  IT_SECT, _______, _______, _______,  _______,  _______,  _______,          _______,
-        KC_TILD, _______,  _______,  IT_EGRV, _______, _______, _______, IT_UGRV, IT_IGRV, IT_OGRV, _______,  _______,  _______,  _______,          _______,
-        _______, IT_AGRV,  _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
+        KC_GRV,  _______,  _______,  _______, EURO,    _______, DEG,     SECT,    _______, _______, _______,  _______,  _______,  _______,          _______,
+        KC_TILD, _______,  _______,  EGRV,    _______, _______, _______, UGRV,    IGRV,    OGRV,    _______,  _______,  _______,  _______,          _______,
+        _______, AGRV,     _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
         _______,           _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,           _______,
         _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
 
@@ -88,9 +88,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     */
     [_FKEYS] = LAYOUT_ansi_67(
         _______, KC_F1,    KC_F2,    KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,   _______,          _______,
-        _______, _______,  _______,  _______, _______, _______, KC_ACL0, KC_BTN1, KC_MS_U, KC_BTN2, KC_ACL1,  _______,  _______,  _______,          _______,
+        _______, _______,  _______,  _______, RUN,     _______, KC_ACL0, KC_BTN1, KC_MS_U, KC_BTN2, KC_ACL1,  _______,  _______,  _______,          _______,
         KC_LCTL, _______,  _______,  _______, _______, _______, KC_WH_D, KC_MS_L, KC_MS_D, KC_MS_R, KC_WH_U,  _______,            _______,          _______,
-        _______,           _______,  KC_F13,  KC_F14,  KC_F15,  KC_F16,  _______, _______, _______, _______,  _______,  _______,           _______,
+        _______,           KC_F13,   KC_F14,  KC_F15,  KC_F16,  _______, _______, _______, _______, _______,  _______,  _______,           _______,
         _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
 
     /*
@@ -99,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * Accessed by holding semicolon.
     * Acts as cmd for any unbound keys.
     ,---------------------------------------------------------------------------------------------------------.
-    | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   -  |   =  | BKsp | | INS |
+    | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |  ⏮️  |  ⏯️ |  ⏭️  |  🔇 |  🔉  |  🔈 | BKsp | | INS |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
     | Tab  |   Q  |   W  | PV_W |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [   |  ]   |  \   | | DEL |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
@@ -111,10 +111,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     `---------------------------------------------------------------------------------------------------------'
     */
     [_NAV] = LAYOUT_ansi_67(
-        _______, _______,  _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,  _______,          KC_END,
-        _______, _______,  _______,  WORD_R,  _______, _______, _______, _______, _______, LINE_R,  LINE_L,   _______,  _______,  KC_HOME,          KC_PGUP,
-        _______, _______,  _______,  _______, _______, _______, _______, _______, _______, KC_INS,  KC_HOME,  KC_PGUP,            _______,          KC_PGDN,
-        _______,           _______,  CUT,     COPY,    PASTE,   WORD_L,  _______, _______, KC_DEL,  KC_END,   KC_PGDN,  _______,           _______,
+        _______, _______,  _______,  _______, _______, _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,          KC_END,
+        _______, _______,  _______,  WORD_R,  KC_INS,  KC_HOME, KC_PGUP, RUN,     KC_UP,   LINE_R,  LINE_L,   _______,  _______,  KC_HOME,          KC_PGUP,
+        LOCK,    _______,  _______,  _______, KC_DEL,  KC_DEL,  KC_PGDN, KC_LEFT, KC_DOWN, KC_RIGHT,_______,  _______,            _______,          KC_PGDN,
+        _______,           _______,  CUT,     COPY,    PASTE,   WORD_L,  _______, CATCH, _______, _______,  _______,  _______,           _______,
         _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
 
     /*
@@ -123,23 +123,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * Accessed via FKEY+SYMBOL keys.
     TODO: fix comment scheme
     ,---------------------------------------------------------------------------------------------------------.
-    | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |   -  |   =  | BKsp | | INS |
+    | ESC  |  🔆- | 🔆+ |W_AL_T| FILES|   5  |   6  |  ⏮️  |  ⏯️ |  ⏭️  |  🔇 |  🔉  |  🔈 | BKsp | | INS |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
-    | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [   |  ]   |  \   | | DEL |
+    | Tab  | MD_NX|BRGHT+| HUE+ | SAT+ |SPEED+|   Y  | CYC_U|   I  | C_LST| C_IMG| C_MOV|  ]   |  \   | | DEL |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
-    | LOCK |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  '   |    Enter    |       |
+    | LOCK | MD_PV|BRGHT-| HUE- | SAT- |SPEED-|   H  |   J  |   K  |   L  |CPADDR|  '   |    Enter    |       |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
     | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
     |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
     | Ctrl |  GUI |  FN  |                   Emoji                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
     `---------------------------------------------------------------------------------------------------------'
+    * SPEED+, SPEED- -> RGB speed up/down
+    * Sat+, Sat- -> RGB saturation up/down
+    * HUE+, HUE- -> RGB hue up/down
+    * BRGHT+, BRGHT- -> RGB brightness up/down.
+    * MD_NX -> RGB mode next
+    * MD_PV -> RGB mode previous
     */
     [_ADJUST] = LAYOUT_ansi_67(
-        KC_GRV,  KC_BRID,  KC_BRIU,  KC_TASK, KC_FLXP, RM_VALD, RM_VALU, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,          _______,
-        RM_TOGG, RM_NEXT,  RM_VALU,  RM_HUEU, RM_SATU, RM_SPDU, _______, _______, _______, CAP_LST, CAP_IMG,  CAP_MOV,  _______,  _______,          _______,
-        LOCK,    RM_PREV,  RM_VALD,  RM_HUED, RM_SATD, RM_SPDD, _______, _______, _______, KVM_SWT, COPYADDR, KC_MPLY,            _______,          _______,
-        QK_BOOT,           _______,  XBX_IMG, XBX_MOV, _______, _______, NK_TOGG, _______, _______, _______,  _______,  _______,           _______,
-        _______, _______,  _______,                             EMOJI,                              _______,  _______,  _______,  _______, _______, _______),
+        MD_CODE, KC_BRID,  KC_BRIU,  KC_TASK, KC_FLXP, _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,          _______,
+        RM_TOGG, RM_NEXT,  RM_VALU,  RM_HUEU, RM_SATU, RM_SPDU, _______, UC_NEXT, _______, CAP_LST, CAP_IMG,  CAP_MOV,  _______,  _______,          _______,
+        LOCK,    RM_PREV,  RM_VALD,  RM_HUED, RM_SATD, RM_SPDD, _______, _______, _______, _______, COPYADDR, _______,            _______,          _______,
+        QK_BOOT,           UC_NEXT,  XBX_IMG, XBX_MOV, _______, _______, NK_TOGG, _______, _______, _______,  _______,  QK_RBT,            _______,
+        DB_TOGG, _______,  _______,                             EMOJI,                              _______,  _______,  _______,  _______, _______, _______),
 };
 
 // track the time of the last key input.
@@ -147,12 +153,6 @@ static uint16_t last_key_time;
 
 // track the last keycode pressed.
 static uint16_t last_key_code;
-
-// track the state of MEH over multiple key presses.
-// 0 - not activated
-// 1 - pressed but waiting activation
-// 2 - activated MEH combo
-static int meh_activated;
 
 // track the state of NAV_SCLN
 // 0 - not activated
@@ -162,6 +162,8 @@ static int meh_activated;
 // 4 - consumed (as cmd)
 static int semicolon_nav_activated;
 
+/*
+* game mode
 // keep track of the current kvm target (to play a different sound on switch).
 static int kvm_target;
 
@@ -169,6 +171,7 @@ static int kvm_target;
 static int game_target = -1;
 
 #define IS_GAME kvm_target == game_target
+*/
 
 // whether a symbol was typed after symbol layer switch
 // 0  - not consumed
@@ -214,6 +217,7 @@ float song_kvm_1[][2] = SONG(S__NOTE(_E5),S__NOTE(_C5));
 float song_game_0[][2] = SONG(S__NOTE(_C6),S__NOTE(_C5));
 float song_game_1[][2] = SONG(S__NOTE(_C5),S__NOTE(_C6));
 */
+
 void backtick_commit(void){
     switch (backtick_surround_state)
     {
@@ -279,12 +283,9 @@ bool process_backtick_surround(uint16_t keycode, keyrecord_t *record) {
             break;
 
         case KC_ENT:
-        case MEH_ENT:
             // exit via enter
             backtick_commit();
-            meh_activated = 3;
             return false;
-
         default:
             // or consume on any other key
             backtick_surround_state = 2;
@@ -338,34 +339,6 @@ bool process_symbol_specials(uint16_t keycode, keyrecord_t *record) {
             }
         }
 
-        // When typing numbers, we usually want comma/period instead of angled brackets.
-        if (last_was_number)
-        {
-            switch (keycode) {
-                case KC_LT:
-                    tap_code16(KC_COMM);
-                    return false;
-                case KC_GT:
-                    tap_code16(KC_DOT);
-                    return false;
-            }
-        }
-
-        if (symbol_consumed == 1)
-        {
-            switch (keycode) {
-                case MEH_ENT:
-                    if (last_key_code == KC_LT)
-                    {
-                        register_code(KC_LALT);
-                        tap_code16(KC_RGHT);
-                        unregister_code(KC_LALT);
-                        return false;
-                    }
-                    break;
-            }
-        }
-
         // only upgrade from initial state. 2 is capturing
         if (symbol_consumed == 0)
             symbol_consumed = 1;
@@ -381,63 +354,6 @@ bool process_symbol_specials(uint16_t keycode, keyrecord_t *record) {
                 }
                 return true;
         }
-    }
-
-    return true;
-}
-
-bool process_meh(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case MEH_ENT:
-            if (record->event.pressed) {
-                if (last_key_code != KC_LGUI && (timer_elapsed(last_key_time) < 200 || get_highest_layer(layer_state) != _BASE))
-                {
-                    register_code(KC_ENT);
-                    meh_activated = 3;
-                }
-                else
-                {
-                    meh_activated = 1;
-                }
-            }
-            else
-            {
-                switch (meh_activated)
-                {
-                    case 1:
-                        if (timer_elapsed(last_key_time) < 200)
-                            tap_code16(KC_ENT);
-                        break;
-
-                    case 2:
-                        unregister_code(KC_LCTL);
-                        unregister_code(KC_LSFT);
-                        unregister_code(KC_LALT);
-                        break;
-
-                    case 3:
-                        unregister_code(KC_ENT);
-                        break;
-                }
-
-                meh_activated = 0;
-            }
-            return true;
-
-        default:
-            switch (meh_activated)
-            {
-                case 1:
-                case 3:
-                    unregister_code(KC_ENT);
-                    register_code(KC_LCTL);
-                    register_code(KC_LSFT);
-                    register_code(KC_LALT);
-                    meh_activated = 2;
-                    break;
-            }
-
-            break;
     }
 
     return true;
@@ -519,7 +435,7 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
             unregister_nav_scln_down_state();
             semicolon_nav_activated = 2;
 
-            // actions for these are handled by the keys/macros temselves.
+            // actions for these are handled by the keys/macros themselves.
             return true;
 
         case KC_LEFT:
@@ -572,13 +488,13 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
 
     // if the nav layer doesn't have a specific action for the pressed key, we add a cmd modifier.
     // this feels pretty good but may be a bit noisy/undefined.
-    if (semicolon_nav_activated != 4 && semicolon_nav_activated != 2)
-    {
-        unregister_nav_scln_down_state();
+    // if (semicolon_nav_activated != 4 && semicolon_nav_activated != 2)
+    // {
+    //     unregister_nav_scln_down_state();
 
-        register_code16(KC_LGUI);
-        semicolon_nav_activated = 4;
-    }
+    //     register_code16(KC_LGUI);
+    //     semicolon_nav_activated = 4;
+    // }
 
     return true;
 }
@@ -682,15 +598,20 @@ bool process_macros(uint16_t keycode, keyrecord_t *record) {
             return false;
 
         case MD_CODE:
-            SEND_STRING("```csharp" SS_LSFT(SS_TAP(X_ENT)) SS_LSFT(SS_TAP(X_ENT)) "```");
+            SEND_STRING("```dart" SS_LSFT(SS_TAP(X_ENT)) SS_LSFT(SS_TAP(X_ENT)) "```");
             SEND_STRING(SS_TAP(X_UP));
             return false;
 
+        case CATCH:
+            SEND_STRING(SS_LCTL(SS_TAP(X_UP)));
+            SEND_STRING("mia");
+            return false;
+/*
         case KVM_SWT:
             if (get_mods() & MOD_BIT(KC_LCTL))
             {
                 SEND_STRING(SS_LCTL(SS_TAP(X_F12)) "t");
-                // PLAY_SONG(song_kvm_setting);
+                PLAY_SONG(song_kvm_setting);
                 return false;
             }
 
@@ -700,16 +621,16 @@ bool process_macros(uint16_t keycode, keyrecord_t *record) {
             // track the current target device to give audible feedback
             kvm_target = (kvm_target + 1) % 2;
 
-            // ! sound not working
-            // if (kvm_target == 1)
-            //     PLAY_SONG(song_kvm_1);
-            // else
-            //     PLAY_SONG(song_kvm_0);
-            // !
+
+            if (kvm_target == 1)
+                PLAY_SONG(song_kvm_1);
+            else
+                PLAY_SONG(song_kvm_0);
+
 
             // set_game_mode(IS_GAME, false);
             return false;
-
+*/
         case KC_BSPC:
             // ctrl-backspace maps to opt-backspace
             if (get_mods() == MOD_BIT(KC_LCTL))
@@ -786,24 +707,112 @@ void update_last_was_number(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+
+// whether a alt_fn was typed after fkeys layer switch
+// 0  - not activated
+// 1  - pressed (waiting to decide on alt_fn or fkeys)
+// 2  - consumed (upgraded to alt_fn)
+// 3+ - activated by special case
+static int alt_fn_activated;
+
+// Se viene premuto due volte il left alt oppure right alt seguito da left alt
+static uint16_t last_alt_time = 0;
+static bool last_was_lalt = false;
+static bool last_was_ralt = false;
+
+void unregister_alt_fn_down_state(void) {
+    unregister_code16(KC_LALT);
+
+    switch (alt_fn_activated)
+    {
+        // unregister special case keys
+    }
+
+    alt_fn_activated = 0;
+}
+
+bool start_alt_combo(void) {
+    return get_mods() & MOD_BIT(KC_LSFT) || get_mods() & MOD_BIT(KC_LGUI) || get_mods() & MOD_BIT(KC_LCTL);
+}
+
+bool process_alt_fn(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == ALT_FN)
+    {
+        if (record->event.pressed)
+        {
+                uint16_t now = timer_read();
+                if ((last_was_lalt && timer_elapsed(last_alt_time) < 400) ||
+                    (last_was_ralt && timer_elapsed(last_alt_time) < 400)) {
+                    alt_fn_activated = 1;
+                    layer_on(_FKEYS);
+                    last_was_lalt = false;
+                    last_was_ralt = false;
+                    return false;
+                }else {
+                    register_code16(KC_LALT);
+                    alt_fn_activated = 2;
+                    return true;
+                }
+                last_alt_time = now;
+                last_was_lalt = true;
+                last_was_ralt = false;
+                return false;
+            // if (start_alt_combo() || (get_mods() == 0 && timer_elapsed(last_key_time) < 100) || (last_key_code == KC_RALT || last_key_code == KC_LALT)) {
+                // register_code16(KC_LALT);
+                // alt_fn_activated = 2;
+                // return true;
+            // } else {
+                // alt_fn_activated = 1;
+                // layer_on(_FKEYS);
+            // }
+        }else{
+            switch (alt_fn_activated)
+            {
+                case 1:
+                    if (timer_elapsed(last_key_time) < 250)
+                    {
+                        // clears a potential ctrl modifier from CTRL_ESC.
+                        // sequence of events is SCLN down - wait 500ms - CTRL_ESC down - SCLN up - CTRL_ESC up
+                        clear_mods();
+                        tap_code16(KC_LALT);
+                    }
+                    break;
+            }
+
+            unregister_alt_fn_down_state();
+            alt_fn_activated = 0;
+            layer_off(_FKEYS);
+            return false;
+        }
+    } else if (keycode == KC_RALT && record->event.pressed) {
+        last_alt_time = timer_read();
+        last_was_ralt = true;
+        last_was_lalt = false;
+    }
+
+    if (!record->event.pressed || alt_fn_activated < 1)
+        return true;
+
+    switch (keycode) {
+        // handle special case keys, where a certain key is pressed immediately following
+    }
+
+    return true;
+}
+
 bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
     if (!process_symbol_specials(keycode, record)) return false;
+    if (!process_alt_fn(keycode, record)) return false;
 
-    // in game mode, all excess processing is skipped (mainly to avoid unwanted macro / helper triggers).
-    if (!(IS_GAME))
-    {
-        // delay shift down presses until next key.
-        if (!process_left_shift(keycode, record)) return false;
-        if (!process_right_shift(keycode, record)) return false;
+    // delay shift down presses until next key.
+    if (!process_left_shift(keycode, record)) return false;
+    if (!process_right_shift(keycode, record)) return false;
 
-        if (!process_nav_scln(keycode, record)) return false;
+    if (!process_nav_scln(keycode, record)) return false;
 
-        if (!process_backtick_surround(keycode, record)) return false;
+    if (!process_backtick_surround(keycode, record)) return false;
 
-        if (!process_meh(keycode, record)) return false;
-
-        if (!process_macros(keycode, record)) return false;
-    }
+    if (!process_macros(keycode, record)) return false;
 
     return true;
 }
@@ -811,7 +820,6 @@ bool process_all_custom(uint16_t keycode, keyrecord_t *record) {
 // For debounce and edge case purposes, track the last key timing, key code,
 // and whether it was a numeric character or not.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
     bool retval = process_all_custom(keycode, record);
 
     if (record->event.pressed)
@@ -827,4 +835,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // When holding both SYMBOL and FKEYS, the ADJUST layer will be accessible.
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _SYMBOL, _FKEYS, _ADJUST);
+}
+
+void suspend_power_down_user(void) {
+    // Disabilita l’RGB matrix in sospensione
+    rgb_matrix_set_suspend_state(true);
+}
+void suspend_wakeup_init_user(void) {
+    // Riabilita l’RGB matrix al wake-up
+    rgb_matrix_set_suspend_state(false);
 }
