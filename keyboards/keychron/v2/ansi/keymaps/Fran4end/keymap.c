@@ -101,11 +101,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ,---------------------------------------------------------------------------------------------------------.
     | ESC  |   1  |   2  |   3  |   4  |   5  |   6  |  ⏮️  |  ⏯️ |  ⏭️  |  🔇 |  🔉  |  🔈 | BKsp | | INS |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------| | HOME|
-    | Tab  |   Q  |   W  | PV_W |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [   |  ]   |  \   | | DEL |
+    | Tab  |   Q  |   W  | PV_W |   R  |   T  |   Y  |   U  |  Up  |   O  |   P  |  [   |  ]   |  \   | | DEL |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
-    | LOCK |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  '   |    Enter    |       |
+    | LOCK |   A  |   S  |   D  |   F  |   G  |   H  | Left | Down |Right |   ;  |  '   |    Enter    |       |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
-    | Shift|   Z  |  CUT | COPY | PASTE| NX_W |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
+    | Shift|   Z  |  CUT | COPY |PASTE | NX_W |   N  |CATCH |   ,  |   .  |   /  | Shift|      |  Up  |       |
     |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
     | Ctrl |  GUI |  FN  |                   Space                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
     `---------------------------------------------------------------------------------------------------------'
@@ -432,6 +432,13 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
         case LINE_R:
         case TAB_L:
         case TAB_R:
+        case KC_MPRV:
+        case KC_MPLY:
+        case KC_MNXT:
+        case KC_MUTE:
+        case KC_VOLD:
+        case KC_VOLU:
+        case CATCH:
             unregister_nav_scln_down_state();
             semicolon_nav_activated = 2;
 
