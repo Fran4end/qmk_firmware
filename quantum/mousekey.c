@@ -127,13 +127,18 @@ static int8_t move_unit(uint8_t axis) {
         dir     = mousekey_x_dir;
     }
 
-    int16_t base_move = dir * MOUSEKEY_MOVE_DELTA * 2;
+    int16_t base_move = dir * MOUSEKEY_MOVE_DELTA;
 
     if (mousekey_frame < 2) { // first frame(s): initial keypress moves one pixel
         mousekey_frame = 1;
-        unit           = base_move; // Use base_move instead of dir * MOUSEKEY_MOVE_DELTA
-    } else {                        // acceleration
-        unit = base_move + (MOUSEKEY_MOVE_DELTA * mk_max_speed * inertia / 2);
+        unit           = base_move;
+    } else { // quadratic acceleration: precise for short movements, fast for long movements
+        float abs_inertia = (inertia < 0.0f) ? -inertia : inertia;
+        float norm        = (mk_time_to_max > 0) ? (abs_inertia / (float)mk_time_to_max) : 1.0f;
+        if (norm > 1.0f) norm = 1.0f;
+        float accel = norm * norm * (float)(MOUSEKEY_MOVE_DELTA * mk_max_speed);
+        if (inertia < 0.0f) accel = -accel;
+        unit = base_move + (int16_t)accel;
     }
 
     if (unit > MOUSEKEY_MOVE_MAX)
@@ -297,12 +302,13 @@ static void apply_combined_inertia(float *vx, float *vy) {
     float velocity_magnitude = sqrt((*vx) * (*vx) + (*vy) * (*vy));
     float angle              = atan2(*vy, *vx);
 
-    float friction = 28;
+    float friction = MOUSEKEY_FRICTION;
 
     // Apply deceleration to the magnitude of the velocity vector
-    if (velocity_magnitude > 0) {
-        // PPY: increased friction when not pressing either key
-        velocity_magnitude = (velocity_magnitude * (256 - friction)) / 256;
+    if (velocity_magnitude > 0.1f) {
+        velocity_magnitude = (velocity_magnitude * (256.0f - friction)) / 256.0f;
+    } else {
+        velocity_magnitude = 0.0f;
     }
 
     // Update the velocities based on the new magnitude and original angle

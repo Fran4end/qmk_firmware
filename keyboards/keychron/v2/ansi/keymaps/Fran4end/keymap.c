@@ -47,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,     KC_W,     KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,          KC_HOME,
         KC_CAPS, KC_A,     KC_S,     KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    NAV_SCLN, KC_QUOT,            KC_ENT,           KC_DEL,
         KC_LSFT,           KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,   KC_SLSH,  KC_RSFT,           KC_UP,
-        KC_LCTL, KC_LGUI,  ALT_FN,                              KC_SPC,                             KC_RALT,  SYMBOL,   FKEYS,    KC_LEFT, KC_DOWN, KC_RGHT),
+        KC_LCTL, KC_LGUI,  ALT_FN,                              KC_SPC,                             KC_LALT,  SYMBOL,   FKEYS,    KC_LEFT, KC_DOWN, KC_RGHT),
 
     /*
     * SYMBOL
@@ -69,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TILD, _______,  _______,  EGRV,    _______, _______, _______, UGRV,    IGRV,    OGRV,    _______,  _______,  _______,  _______,          _______,
         _______, AGRV,     _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,            _______,          _______,
         _______,           _______,  _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______,           _______,
-        _______, _______,  _______,                             _______,                            _______,  _______,  _______,  _______, _______, _______),
+        _______, _______,  _______,                             _______,                            KC_NO,    _______,  _______,  _______, _______, _______),
 
     /*
     * FNKEYS
@@ -129,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+ +-----|
     | LOCK | MD_PV|BRGHT-| HUE- | SAT- |SPEED-|   H  |   J  |   K  |   L  |CPADDR|  '   |    Enter    |       |
     |------+------+------+------+------+------+------+------+------+------+------+------+------+------+       |
-    | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
+    | Shift| U_SYS|   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|      |  Up  |       |
     |------+------+------+------+------+------+------+------+------+------+------+------+      +------|       |
     | Ctrl |  GUI |  FN  |                   Emoji                 | Alt  |SYMBOL| MEH  | Left | Down | Right |
     `---------------------------------------------------------------------------------------------------------'
@@ -139,6 +139,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     * BRGHT+, BRGHT- -> RGB brightness up/down.
     * MD_NX -> RGB mode next
     * MD_PV -> RGB mode previous
+    * U_SYS -> Unicode system (Windows, Mac, Linux) switcher
     */
     [_ADJUST] = LAYOUT_ansi_67(
         MD_CODE, KC_BRID,  KC_BRIU,  KC_TASK, KC_FLXP, _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,          _______,
@@ -295,12 +296,35 @@ bool process_backtick_surround(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
+static bool right_alt_key_held = false;
+
 bool process_symbol_specials(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == KC_LALT || keycode == KC_RALT)
+    {
+        if (record->event.pressed)
+        {
+            if (IS_LAYER_ON(_SYMBOL))
+                return false;
+            right_alt_key_held = true;
+        }
+        else
+        {
+            right_alt_key_held = false;
+        }
+        return true;
+    }
+
     // handle actual layer toggle.
     if (keycode == SYMBOL)
     {
         if (record->event.pressed)
         {
+            if (right_alt_key_held && (get_mods() & MOD_MASK_ALT))
+            {
+                // Neutralize accidental adjacent Alt press before releasing it so Windows doesn't focus the menu bar.
+                tap_code(KC_F18);
+                unregister_mods(MOD_MASK_ALT);
+            }
             symbol_consumed = 0;
             layer_on(_SYMBOL);
         }
@@ -311,11 +335,15 @@ bool process_symbol_specials(uint16_t keycode, keyrecord_t *record) {
             if (symbol_consumed == 3)
             {
                 unregister_code(KC_PGUP);
+            }
+            else if (symbol_consumed == 4)
+            {
                 unregister_code(KC_LALT);
             }
+            symbol_consumed = 0;
         }
 
-        return true;
+        return false;
     }
 
     if (!IS_LAYER_ON(_SYMBOL))
@@ -335,7 +363,8 @@ bool process_symbol_specials(uint16_t keycode, keyrecord_t *record) {
                     return false;
                 case KC_BSPC:
                     register_code(KC_LALT);
-                    symbol_consumed = 3;
+                    symbol_consumed = 4;
+                    break;
             }
         }
 
@@ -350,9 +379,17 @@ bool process_symbol_specials(uint16_t keycode, keyrecord_t *record) {
                 if (symbol_consumed == 3)
                 {
                     unregister_code(KC_PGUP);
-                    unregister_code(KC_LALT);
+                    symbol_consumed = 1;
+                    return false;
                 }
-                return true;
+                break;
+            case KC_BSPC:
+                if (symbol_consumed == 4)
+                {
+                    unregister_code(KC_LALT);
+                    symbol_consumed = 1;
+                }
+                break;
         }
     }
 
@@ -439,6 +476,13 @@ bool process_nav_scln(uint16_t keycode, keyrecord_t *record) {
         case KC_VOLD:
         case KC_VOLU:
         case CATCH:
+        case KC_DEL:
+        case KC_INS:
+        case RUN:
+        case LOCK:
+        case CUT:
+        case COPY:
+        case PASTE:
             unregister_nav_scln_down_state();
             semicolon_nav_activated = 2;
 
@@ -523,7 +567,10 @@ bool process_left_shift(uint16_t keycode, keyrecord_t *record) {
             lsft_state = 1;
 
             if (rsft_state == 1)
+            {
                 backtick_begin();
+                rsft_state = 2;
+            }
 
             return false;
         }
@@ -716,23 +763,20 @@ void update_last_was_number(uint16_t keycode, keyrecord_t *record) {
 
 
 // whether a alt_fn was typed after fkeys layer switch
-// 0  - not activated
-// 1  - pressed (waiting to decide on alt_fn or fkeys)
-// 2  - consumed (upgraded to alt_fn)
-// 3+ - activated by special case
+// 0 - not activated
+// 1 - pressed as _FKEYS (no key pressed yet)
+// 2 - pressed as KC_LALT
+// 3 - pressed as _FKEYS (consumed by another key)
 static int alt_fn_activated;
 
 // Se viene premuto due volte il left alt oppure right alt seguito da left alt
-static uint16_t last_alt_time = 0;
+static uint32_t last_alt_time = 0;
 static bool last_was_lalt = false;
 static bool last_was_ralt = false;
 
 void unregister_alt_fn_down_state(void) {
-    unregister_code16(KC_LALT);
-
-    switch (alt_fn_activated)
-    {
-        // unregister special case keys
+    if (alt_fn_activated == 2) {
+        unregister_code16(KC_LALT);
     }
 
     alt_fn_activated = 0;
@@ -747,61 +791,44 @@ bool process_alt_fn(uint16_t keycode, keyrecord_t *record) {
     {
         if (record->event.pressed)
         {
-                uint16_t now = timer_read();
-                if ((last_was_lalt && timer_elapsed(last_alt_time) < 400) ||
-                    (last_was_ralt && timer_elapsed(last_alt_time) < 400)) {
-                    alt_fn_activated = 1;
-                    layer_on(_FKEYS);
-                    last_was_lalt = false;
-                    last_was_ralt = false;
-                    return false;
-                }else {
-                    register_code16(KC_LALT);
-                    alt_fn_activated = 2;
-                    return true;
-                }
+            uint32_t now = timer_read32();
+            if ((last_was_lalt && timer_elapsed32(last_alt_time) < 400) ||
+                (last_was_ralt && timer_elapsed32(last_alt_time) < 400)) {
+                alt_fn_activated = 1;
+                layer_on(_FKEYS);
+                last_was_lalt = false;
+                last_was_ralt = false;
+                return false;
+            } else {
+                register_code16(KC_LALT);
+                alt_fn_activated = 2;
                 last_alt_time = now;
                 last_was_lalt = true;
                 last_was_ralt = false;
                 return false;
-            // if (start_alt_combo() || (get_mods() == 0 && timer_elapsed(last_key_time) < 100) || (last_key_code == KC_RALT || last_key_code == KC_LALT)) {
-                // register_code16(KC_LALT);
-                // alt_fn_activated = 2;
-                // return true;
-            // } else {
-                // alt_fn_activated = 1;
-                // layer_on(_FKEYS);
-            // }
-        }else{
-            switch (alt_fn_activated)
-            {
-                case 1:
-                    if (timer_elapsed(last_key_time) < 250)
-                    {
-                        // clears a potential ctrl modifier from CTRL_ESC.
-                        // sequence of events is SCLN down - wait 500ms - CTRL_ESC down - SCLN up - CTRL_ESC up
-                        clear_mods();
-                        tap_code16(KC_LALT);
-                    }
-                    break;
             }
-
+        } else {
+            bool was_fkeys = (alt_fn_activated == 1 || alt_fn_activated == 3);
             unregister_alt_fn_down_state();
-            alt_fn_activated = 0;
-            layer_off(_FKEYS);
+            if (was_fkeys) {
+                layer_off(_FKEYS);
+            }
             return false;
         }
-    } else if (keycode == KC_RALT && record->event.pressed) {
-        last_alt_time = timer_read();
+    } else if ((keycode == KC_RALT || keycode == KC_LALT) && record->event.pressed) {
+        last_alt_time = timer_read32();
         last_was_ralt = true;
         last_was_lalt = false;
+        return true;
     }
 
-    if (!record->event.pressed || alt_fn_activated < 1)
-        return true;
+    if (record->event.pressed) {
+        last_was_lalt = false;
+        last_was_ralt = false;
 
-    switch (keycode) {
-        // handle special case keys, where a certain key is pressed immediately following
+        if (alt_fn_activated == 1) {
+            alt_fn_activated = 3;
+        }
     }
 
     return true;
@@ -851,4 +878,57 @@ void suspend_power_down_user(void) {
 void suspend_wakeup_init_user(void) {
     // Riabilita l’RGB matrix al wake-up
     rgb_matrix_set_suspend_state(false);
+}
+
+#ifdef RGB_MATRIX_ENABLE
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (!rgb_matrix_get_flags()) {
+        return true;
+    }
+
+    uint8_t layer = get_highest_layer(layer_state);
+    uint8_t hue;
+    switch (layer) {
+        case _SYMBOL:
+            hue = 128; // Cyan
+            break;
+        case _FKEYS:
+            hue = 170; // Blue
+            break;
+        case _NAV:
+            hue = 85;  // Green
+            break;
+        case _ADJUST:
+            hue = 191; // Purple
+            break;
+        default:
+            return true;
+    }
+
+    uint8_t base_layer = get_highest_layer(default_layer_state);
+    rgb_t   rgb        = hsv_to_rgb((hsv_t){hue, 255, rgb_matrix_get_val()});
+
+    for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+        for (uint8_t col = 0; col < MATRIX_COLS; col++) {
+            uint8_t index = g_led_config.matrix_co[row][col];
+            if (index == NO_LED || index < led_min || index >= led_max) {
+                continue;
+            }
+
+            keypos_t pos     = {.row = row, .col = col};
+            uint16_t keycode = keymap_key_to_keycode(layer, pos);
+            if (keycode == KC_NO || keycode == KC_TRNS || keycode == keymap_key_to_keycode(base_layer, pos)) {
+                rgb_matrix_set_color(index, 0, 0, 0);
+            } else {
+                rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+            }
+        }
+    }
+
+    return true;
+}
+#endif
+
+void eeconfig_init_user(void) {
+    set_unicode_input_mode(UNICODE_MODE_WINCOMPOSE);
 }
